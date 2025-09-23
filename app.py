@@ -1,7 +1,7 @@
-# app.py
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+from services.comprehend_service import create_comprehend_service
 
 # Set page configuration - this should be the first Streamlit command
 st.set_page_config(
@@ -16,6 +16,7 @@ st.markdown("Analyze text sentiment using AWS Comprehend's powerful NLP capabili
 
 # Create tabs for different functionalities
 tab1, tab2, tab3 = st.tabs(["Single Text Analysis", "Batch Analysis", "About"])
+comprehend_service = create_comprehend_service()
 
 with tab1:
     st.header("Single Text Analysis")
@@ -33,6 +34,7 @@ with tab1:
         if text_input.strip():
             with st.spinner("Analyzing sentiment..."):
                 try:
+                    comprehend_service.analyze_sentiment(text_input.strip())
                     # This is where you'll call AWS Comprehend
                     # comprehend = get_comprehend_client()
                     # response = comprehend.detect_sentiment(Text=text_input, LanguageCode='en')
@@ -111,9 +113,6 @@ with tab3:
 
 # Sidebar for configuration
 with st.sidebar:
-    st.header("Configuration")
-    st.subheader("AWS Settings")
-    st.divider()
     st.subheader("Analysis Settings")
     language_code = st.selectbox(
         "Language",
