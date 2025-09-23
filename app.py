@@ -34,13 +34,13 @@ with tab1:
         if text_input.strip():
             with st.spinner("Analyzing sentiment..."):
                 try:
-                    mock_sentiment = comprehend_service.analyze_sentiment(text_input.strip())
+                    sentiment_api_response = comprehend_service.analyze_sentiment(text_input.strip())
                     
                     # Display results
                     col1, col2 = st.columns(2)
                     
                     with col1:
-                        sentiment = mock_sentiment['sentiment']
+                        sentiment = sentiment_api_response['sentiment']
                         color_map = {
                             'POSITIVE': '🟢',
                             'NEGATIVE': '🔴', 
@@ -53,7 +53,7 @@ with tab1:
                         )
                     
                     with col2:
-                        scores = mock_sentiment['sentiment_score']
+                        scores = sentiment_api_response['sentiment_score']
                         st.write("**Confidence Scores:**")
                         for sentiment_type, score in scores.items():
                             st.progress(score, text=f"{sentiment_type}: {score:.1%}")
