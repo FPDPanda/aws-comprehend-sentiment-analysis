@@ -34,30 +34,18 @@ with tab1:
         if text_input.strip():
             with st.spinner("Analyzing sentiment..."):
                 try:
-                    comprehend_service.analyze_sentiment(text_input.strip())
-                    # This is where you'll call AWS Comprehend
-                    # comprehend = get_comprehend_client()
-                    # response = comprehend.detect_sentiment(Text=text_input, LanguageCode='en')
-                    
-                    # For now, let's use mock data
-                    mock_sentiment = {
-                        'Sentiment': 'POSITIVE',
-                        'SentimentScore': {
-                            'Positive': 0.95,
-                            'Negative': 0.02,
-                            'Neutral': 0.02,
-                        }
-                    }
+                    mock_sentiment = comprehend_service.analyze_sentiment(text_input.strip())
                     
                     # Display results
                     col1, col2 = st.columns(2)
                     
                     with col1:
-                        sentiment = mock_sentiment['Sentiment']
+                        sentiment = mock_sentiment['sentiment']
                         color_map = {
                             'POSITIVE': '🟢',
                             'NEGATIVE': '🔴', 
                             'NEUTRAL': '🟡',
+                            'MIXED': '🟠'
                         }
                         st.metric(
                             label="Overall Sentiment",
@@ -65,7 +53,7 @@ with tab1:
                         )
                     
                     with col2:
-                        scores = mock_sentiment['SentimentScore']
+                        scores = mock_sentiment['sentiment_score']
                         st.write("**Confidence Scores:**")
                         for sentiment_type, score in scores.items():
                             st.progress(score, text=f"{sentiment_type}: {score:.1%}")
@@ -109,6 +97,7 @@ with tab3:
     - 🟢 Positive
     - 🔴 Negative  
     - 🟡 Neutral
+    - 🟠 Mixed
     """)
 
 # Sidebar for configuration
