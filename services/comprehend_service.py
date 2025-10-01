@@ -51,13 +51,6 @@ class ComprehendService:
         except Exception as e:
             logging.error(f"Error in sentiment analysis: {e}")
             raise
-    
-    def health_check(self) -> bool:
-        try:
-            response = requests.get(f"{self.base_url}/health", timeout=5)
-            return response.status_code == 200
-        except:
-            return False
 
 def create_comprehend_service(api_url: str = "http://127.0.0.1:8000") -> ComprehendService:
     return ComprehendService(base_url=api_url)
